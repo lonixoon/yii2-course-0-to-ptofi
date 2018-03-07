@@ -53,6 +53,10 @@ $config = [
         */
     ],
     'params' => $params,
+
+    // мои эксперементы
+
+//    'layout' => 'basic',
 ];
 
 if (YII_ENV_DEV) {
