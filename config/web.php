@@ -55,6 +55,7 @@ $config = [
     'params' => $params,
 
     // мои эксперементы
+    'language' => 'ru',
 
 //    'layout' => 'basic',
 ];
