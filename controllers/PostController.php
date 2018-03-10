@@ -8,6 +8,7 @@
 
 namespace app\controllers;
 
+use app\models\Category;
 use Yii;
 use app\models\TestForm;
 
@@ -17,7 +18,7 @@ class PostController extends AppController
     public $layout = 'basic';
 
     // если не требуется csrf защита на отправляемый action
-    public  function beforeAction($action)
+    public function beforeAction($action)
     {
         if ($action->id == 'index') {
             $this->enableCsrfValidation = false;
@@ -49,7 +50,6 @@ class PostController extends AppController
     }
 
 
-
     public function actionShow()
     {
         // устанавливаем отдельный шаблон для конкретной страницы
@@ -67,6 +67,40 @@ class PostController extends AppController
             'content' => 'описание страницы',
         ]);
 
-        return $this->render('show');
+        // вугрузить все данные
+//        $cats = Category::find()->all();
+
+        // делаем сортировку
+//        $cats = Category::find()->orderBy(['id' => SORT_DESC])->all();
+
+        // данные в виде массива (работает быстрее при больших запросах)
+//        $cats = Category::find()->asArray()->all();
+
+        // задаём условие для выгрузки данных
+//        $cats = Category::find()->asArray()->where('parent=691')->all();
+//        $cats = Category::find()->asArray()->where(['parent'=> 691])->all();
+
+        // задаём условие для выгрузки данных - содержит в поле title сочитание pp
+//        $cats = Category::find()->asArray()->where(['like', 'title', 'pp'])->all();
+
+        //задаём условие для выгрузки данных - где поле id <= 695
+//        $cats = Category::find()->asArray()->where(['<=', 'id', '695'])->all();
+
+        // вытаскиваем не все записи
+//        $cats = Category::find()->asArray()->where(['parent' => 691])->limit(2)->all();
+//        $cats = Category::find()->asArray()->where(['parent' => 691])->limit(1)->one();
+
+        // выводим количество записей
+//        $cats = Category::find()->asArray()->where(['parent' => 691])->count();
+
+        // извлекаем данные по ключу или значению других полей
+//        $cats = Category::findOne(['parent' => 691]);
+//        $cats = Category::findAll(['parent' => 691]);
+
+        // пример использования чистого, защёщенного SQL запроса
+        $query = "SELECT * FROM categories WHERE title LIKE :search";
+        $cats = Category::findBySql($query, [':search' => '%pp%'])->all();
+
+        return $this->render('show', compact('cats'));
     }
 }

@@ -1,9 +1,18 @@
 <!--передача данных из вида в шаблон-->
 <?php $this->beginBlock('block1') ?>
-    <h1>Заголовок страницы</h1>
+<h1>Заголовок страницы</h1>
 <?php $this->endBlock() ?>
 
 <h1>Show action</h1>
+
+<?php dump($cats) ?>
+<?php //foreach ($cats as $cat): ?>
+    <!--Отображение в виде объекта-->
+<!--    --><?//= $cat->title . '<br>' ?>
+    <!--Отображение в виде массива-->
+<!--    --><?//= $cat['title'] . '<br>' ?>
+<?php //endforeach; ?>
+
 <button class="btn btn-success" id="btn">Кнопка</button>
 <!--подключаем файл со скриптами только к текущей странице-->
 <?php //$this->registerJsFile('@web/js/scripts.js', ['depends' => 'yii\web\YiiAsset']) ?>
