@@ -1,6 +1,7 @@
 <?php
 
 /* @var $this \yii\web\View */
+
 /* @var $content string */
 
 use app\widgets\Alert;
@@ -9,6 +10,8 @@ use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
+
+use yii\helpers\Url;
 
 AppAsset::register($this);
 ?>
@@ -38,15 +41,15 @@ AppAsset::register($this);
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => [
-            ['label' => 'Home', 'url' => ['/site/index']],
-            ['label' => 'Articles', 'url' => ['/post/index']],
-            ['label' => 'About', 'url' => ['/site/about']],
-            ['label' => 'Contact', 'url' => ['/site/contact']],
+            ['label' => 'Home', 'url' => '/'],
+            ['label' => 'Articles', 'url' => ['/post']],
+            ['label' => 'About', 'url' => ['/about']],
+            ['label' => 'Contact', 'url' => ['/contact']],
             Yii::$app->user->isGuest ? (
-                ['label' => 'Login', 'url' => ['/site/login']]
+            ['label' => 'Login', 'url' => ['/login']]
             ) : (
                 '<li>'
-                . Html::beginForm(['/site/logout'], 'post')
+                . Html::beginForm(['/logout'], 'post')
                 . Html::submitButton(
                     'Logout (' . Yii::$app->user->identity->username . ')',
                     ['class' => 'btn btn-link logout']
@@ -60,6 +63,11 @@ AppAsset::register($this);
     ?>
 
     <div class="container">
+
+        <?= Html::a('Home', Url::to('/')) ?>
+        <?= Html::a('About', Url::to(['/about'])) ?>
+        <?= Html::a('Contact', Url::to(['/contact'])) ?>
+
         <?= Breadcrumbs::widget([
             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
         ]) ?>

@@ -11,6 +11,7 @@ namespace app\controllers;
 use app\models\Category;
 use Yii;
 use app\models\TestForm;
+use yii\data\ActiveDataProvider;
 
 class PostController extends AppController
 {
@@ -30,14 +31,30 @@ class PostController extends AppController
     {
         $this->view->title = 'Все статьи';
         // проверка на аякс запрос
-        if (Yii::$app->request->isAjax) {
-            print_r(Yii::$app->request->post());
-        }
+//        if (Yii::$app->request->isAjax) {
+//            print_r(Yii::$app->request->post());
+//        }
+        // изменить запись
+//        $post = TestForm::findOne(3);
+//        $post->email = 'ya@ya.ru';
+//        $post->save();
 
+        // удалить запись
+//        $post = TestForm::findOne(1);
+//        $post->delete();
+
+        // массовое удаление (обезательно передаём параметры!!!)
+//        TestForm::deleteAll(['>', 'id', 1]);
+
+        // добавить данные
         $model = new TestForm();
-
+        // вставляем данные в ручную для проверки
+//        $model->name = 'Автор';
+//        $model->email = 'mail@mail.com';
+//        $model->text = 'Текст сообщения';
+//        $model->save();
         if ($model->load(Yii::$app->request->post())) {
-            if ($model->validate()) {
+            if ($model->save()) {
                 Yii::$app->session->setFlash('success', 'Данные приняты');
                 return $this->refresh();
             } else {
@@ -57,15 +74,16 @@ class PostController extends AppController
 
         // передаём загаловок на страницу
         $this->view->title = 'Статья';
+
         // передаём метатеги
-        $this->view->registerMetaTag([
-            'name' => 'keywords',
-            'content' => 'ключивые теги',
-        ]);
-        $this->view->registerMetaTag([
-            'name' => 'description',
-            'content' => 'описание страницы',
-        ]);
+//        $this->view->registerMetaTag([
+//            'name' => 'keywords',
+//            'content' => 'ключивые теги',
+//        ]);
+//        $this->view->registerMetaTag([
+//            'name' => 'description',
+//            'content' => 'описание страницы',
+//        ]);
 
         // вугрузить все данные
 //        $cats = Category::find()->all();
@@ -98,9 +116,14 @@ class PostController extends AppController
 //        $cats = Category::findAll(['parent' => 691]);
 
         // пример использования чистого, защёщенного SQL запроса
-        $query = "SELECT * FROM categories WHERE title LIKE :search";
-        $cats = Category::findBySql($query, [':search' => '%pp%'])->all();
+//        $query = "SELECT * FROM categories WHERE title LIKE :search";
+//        $cats = Category::findBySql($query, [':search' => '%pp%'])->all();
 
+        // ленивая (отложенная) загрузка
+//        $cats = Category::findOne(694);
+        // жадная загрузка
+        new ActiveDataProvider;
+        $cats = Category::find()->with('products')->all();
         return $this->render('show', compact('cats'));
     }
 }
